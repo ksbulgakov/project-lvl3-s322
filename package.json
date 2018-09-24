@@ -1,0 +1,43 @@
+{
+  "name": "project-lvl3-s322",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksbulgakov/project-lvl3-s322.git"
+  },
+  "author": "Konstantin Bulgakov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ksbulgakov/project-lvl3-s322/issues"
+  },
+  "homepage": "https://github.com/ksbulgakov/project-lvl3-s322#readme",
+  "scripts": {
+    "babel-node": "babel-node",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint",
+    "test": "jest",
+    "test-jest-watch": "jest --coverage --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "jest": "^23.2.0",
+    "jest-watch-typeahead": "^0.1.0"
+  }
+}
