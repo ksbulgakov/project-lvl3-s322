@@ -1,16 +1,14 @@
-import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 import os from 'os';
 import path from 'path';
 import nock from 'nock';
 import makeFileName from '../src/makeFileName';
 import pageLoader from '../src/';
 
-const fsPromises = fs.promises;
-
 nock.disableNetConnect();
 
 describe('Page Loader', () => {
-  it('get file content', async (done) => {
+  it('get file content', async () => {
     const host = 'https://hexlet.io';
     const pathname = '/courses';
     const status = 200;
@@ -21,19 +19,16 @@ describe('Page Loader', () => {
       .get(pathname)
       .reply(status, body);
 
-    fs.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'), async (err, folder) => {
-      if (err) throw err;
-      await pageLoader(folder, `${host}${pathname}`, option)
-        .then(async () => {
-          const pathToFile = path.join(folder, makeFileName(`${host}${pathname}`));
-          const fileContent = await fsPromises.readFile(pathToFile, 'utf8');
-          expect(fileContent).toBe(body);
-          done();
-        });
-    });
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+
+    await pageLoader(folderName, `${host}${pathname}`, option);
+
+    const pathToFile = path.join(folderName, makeFileName(`${host}${pathname}`));
+    const fileContent = await fsPromises.readFile(pathToFile, 'utf8');
+    expect(fileContent).toBe(body);
   });
 
-  it('error', async (done) => {
+  it('error', async () => {
     const host = 'https://hexlet.io';
     const pathname = '/courses';
     const option = true;
@@ -42,19 +37,16 @@ describe('Page Loader', () => {
       .get(pathname)
       .replyWithError('timeout error');
 
-    fs.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'), async (err, folder) => {
-      if (err) throw err;
-      expect.assertions(1);
-      try {
-        await pageLoader(folder, `${host}${pathname}`, option);
-      } catch (error) {
-        expect(error.message).toMatch('timeout error');
-        done();
-      }
-    });
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+
+    try {
+      await pageLoader(folderName, `${host}${pathname}`, option);
+    } catch (error) {
+      expect(error.message).toMatch('timeout error');
+    }
   });
 
-  it('option was not inputed', async (done) => {
+  it('option was not inputed', async () => {
     const host = 'https://hexlet.io';
     const pathname = '/courses';
     const status = 200;
@@ -65,16 +57,13 @@ describe('Page Loader', () => {
       .get(pathname)
       .reply(status, body);
 
-    fs.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'), async (err, folder) => {
-      if (err) throw err;
-      expect.assertions(1);
-      try {
-        await pageLoader(folder, `${host}${pathname}`, option);
-      } catch (error) {
-        expect(error.message).toMatch('An action with link content was not chosen');
-        done();
-      }
-    });
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+
+    try {
+      await pageLoader(folderName, `${host}${pathname}`, option);
+    } catch (error) {
+      expect(error.message).toMatch('An action with link content was not chosen');
+    }
   });
 });
 
