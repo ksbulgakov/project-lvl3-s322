@@ -2,7 +2,8 @@ install:
 	npm install
 
 start:
-	npm run babel-node -- src/bin/gendiff.js --format plain __tests__/__fixtures__/beforeAST.ini __tests__/__fixtures__/afterAST.ini
+	npm run babel-node -- src/bin/page-loader.js --output /home/user/Documents/hexlet/Nodejs/projects/project-lvl3-s322/__tests__/__fixtures__ https://hexlet.io/courses
+
 
 publish:
 	npm publish
