@@ -1,14 +1,15 @@
+import path from 'path';
 import { promises as fsPromises } from 'fs';
 import axios from './lib/axiosAdapted';
 import makeFileName from './makeFileName';
 
 
-const loadPage = (dir, host, option) => {
-  if (!option) {
-    throw new Error('An action with link content was not chosen');
+const loadPage = (host, dir = '') => {
+  if (!host) {
+    throw new Error('No link. Link is requared.');
   }
   return axios.get(host)
-    .then(res => fsPromises.writeFile(`${dir}/${makeFileName(host)}`, res.data));
+    .then(res => fsPromises.writeFile(`${path.resolve(dir)}/${makeFileName(host)}`, res.data));
 };
 
 export default loadPage;

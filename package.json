@@ -52,7 +52,8 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "modulePathIgnorePatterns": [
-      "script"
+      "script",
+      "save"
     ]
   }
 }

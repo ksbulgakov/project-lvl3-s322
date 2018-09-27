@@ -5,9 +5,9 @@ import loadPage from '..';
 
 program
   .version(version, '-v, --version')
-  .arguments('<directory> <link>')
-  .description('Saves a data from a given link.')
-  .option('-o, --output', 'Save data')
-  .action((directory, link) => loadPage(directory, link, program.output))
+  .arguments('<link>')
+  .description('Saves a data from a given link')
+  .option('-o, --output [directory]', 'Choose directory')
+  .action(link => loadPage(link, program.output))
   .parse(process.argv);
 
