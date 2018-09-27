@@ -3,7 +3,7 @@ import os from 'os';
 import path from 'path';
 import nock from 'nock';
 import makeFileName from '../src/makeFileName';
-import pageLoader from '../src/';
+import loadPage from '../src/';
 
 nock.disableNetConnect();
 
@@ -19,9 +19,9 @@ describe('Page Loader', () => {
       .get(pathname)
       .reply(status, body);
 
-    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
 
-    await pageLoader(folderName, `${host}${pathname}`, option);
+    await loadPage(folderName, `${host}${pathname}`, option);
 
     const pathToFile = path.join(folderName, makeFileName(`${host}${pathname}`));
     const fileContent = await fsPromises.readFile(pathToFile, 'utf8');
@@ -37,10 +37,10 @@ describe('Page Loader', () => {
       .get(pathname)
       .replyWithError('timeout error');
 
-    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
 
     try {
-      await pageLoader(folderName, `${host}${pathname}`, option);
+      await loadPage(folderName, `${host}${pathname}`, option);
     } catch (error) {
       expect(error.message).toMatch('timeout error');
     }
@@ -57,10 +57,10 @@ describe('Page Loader', () => {
       .get(pathname)
       .reply(status, body);
 
-    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'pageLoader-'));
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
 
     try {
-      await pageLoader(folderName, `${host}${pathname}`, option);
+      await loadPage(folderName, `${host}${pathname}`, option);
     } catch (error) {
       expect(error.message).toMatch('An action with link content was not chosen');
     }

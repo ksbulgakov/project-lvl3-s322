@@ -3,12 +3,12 @@ import axios from './lib/axiosAdapted';
 import makeFileName from './makeFileName';
 
 
-const pageLoader = (dir, host, option) => {
-  if (option) {
-    return axios.get(host)
-      .then(res => fsPromises.writeFile(`${dir}/${makeFileName(host)}`, res.data));
+const loadPage = (dir, host, option) => {
+  if (!option) {
+    throw new Error('An action with link content was not chosen');
   }
-  throw new Error('An action with link content was not chosen');
+  return axios.get(host)
+    .then(res => fsPromises.writeFile(`${dir}/${makeFileName(host)}`, res.data));
 };
 
-export default pageLoader;
+export default loadPage;
