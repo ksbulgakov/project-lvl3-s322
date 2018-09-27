@@ -30,6 +30,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "commander": "^2.18.0",
     "nock": "^10.0.0"
   },
