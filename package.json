@@ -20,7 +20,7 @@
     "eslint": "eslint",
     "test": "jest --coverage",
     "test-jest-watch": "jest --coverage --watch"
-  },
+  }, 
   "files": [
     "dist"
   ],
@@ -52,8 +52,7 @@
     "testEnvironment": "node",
     "collectCoverage": true,
     "modulePathIgnorePatterns": [
-      "script",
-      "save"
+      "script"
     ]
   }
 }
