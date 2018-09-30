@@ -2,8 +2,8 @@ import url from 'url';
 import path from 'path';
 import { promises as fsPromises } from 'fs';
 import cheerio from 'cheerio';
-import axios from './lib/axiosAdapted';
-import { makeLocalLink, makeFileName, makeFolderName } from './makeName';
+import axios from './lib/axios';
+import makeName from './makeName';
 
 const handleHtnlData = (res, host) => {
   const $ = cheerio.load(res.data);
@@ -23,9 +23,9 @@ const handleHtnlData = (res, host) => {
         return;
       }
 
-      originalPaths = [...originalPaths, path.normalize(`/${link}`)];
+      originalPaths = [...originalPaths, link];
       // Change link to local
-      $(this).attr(tags[tag], makeLocalLink(host, link));
+      $(this).attr(tags[tag], makeName(host, link));
     });
 
     return [...acc, ...originalPaths];
@@ -45,19 +45,18 @@ const loadPage = (host, dir = '') => {
     .then(res => handleHtnlData(res, host))
     .then((data) => {
       linksList = data.links;
-      return fsPromises.writeFile(`${path.resolve(dir)}/${makeFileName(host)}`, data.htmlDocument);
+      return fsPromises
+        .writeFile(`${path.resolve(dir)}/${makeName(host)}`, data.htmlDocument);
     })
-    .then(() => fsPromises.mkdir(`${path.resolve(dir)}/${makeFolderName(host)}`))
+    .then(() => fsPromises.mkdir(`${path.resolve(dir)}/${makeName(host, 'folder')}`))
     .then(() => Promise.all(linksList.map(link =>
       axios({
         method: 'get',
-        url: `${host}${link}`,
+        url: `${host}/${link}`,
         responseType: 'arraybuffer',
       })
-        .then((response) => {
-          console.log(response);
-          return fsPromises.writeFile(`${path.resolve(dir)}/${makeLocalLink(host, link)}`, response.data, 'utf8');
-        }))));
+        .then(response => fsPromises
+          .writeFile(`${path.resolve(dir)}/${makeName(host, link)}`, response.data)))));
 };
 
 export default loadPage;

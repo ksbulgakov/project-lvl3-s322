@@ -1,5 +1,5 @@
 {
-  "name": "project-lvl3-s322",
+  "name": "page-loader-kobu",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -18,9 +18,9 @@
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
     "eslint": "eslint",
-    "test": "jest --coverage",
+    "test": "jest --color",
     "test-jest-watch": "jest --coverage --watch"
-  }, 
+  },
   "files": [
     "dist"
   ],
@@ -32,6 +32,7 @@
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.18.0",
+    "debug": "^4.0.1",
     "nock": "^10.0.0"
   },
   "devDependencies": {

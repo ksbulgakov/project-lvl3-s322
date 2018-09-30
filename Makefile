@@ -2,7 +2,7 @@ install:
 	npm install
 
 start:
-	npm run babel-node -- src/bin/page-loader.js --output /tmp https://ru.hexlet.io/courses
+	npm run babel-node -- src/bin/page-loader.js --output /tmp https://ksbulgakov.github.io/
 
 
 publish:

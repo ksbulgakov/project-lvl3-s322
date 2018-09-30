@@ -14,7 +14,7 @@ describe('Save site', () => {
     const pathToHtmlFile = path.join(__dirname, '/__fixtures__/site/index.html');
     const bodyHtml = await fsPromises.readFile(pathToHtmlFile, 'utf8');
 
-    const pathToCssFile = path.join(__dirname, '/__fixtures__/site/site_files/css.css');
+    const pathToCssFile = path.join(__dirname, '/__fixtures__/site/site_files/css/style.css');
     const bodyCss = await fsPromises.readFile(pathToCssFile, 'utf8');
 
     const pathToImageFile = path.join(__dirname, '/__fixtures__/site/site_files/image.jpg');
@@ -26,7 +26,7 @@ describe('Save site', () => {
     nock(host)
       .get('/courses')
       .reply(status, bodyHtml)
-      .get('/courses/site_files/css.css')
+      .get('/courses/site_files/css/style.css')
       .reply(status, bodyCss)
       .get('/courses/site_files/image.jpg')
       .reply(status, bodyImage)
@@ -52,9 +52,9 @@ describe('Save site', () => {
     await loadPage('https://ru.hexlet.io/courses', folderName);
 
     const pathToExpectedCssFile = path
-      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/css.css');
+      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/site_files-css-style.css');
     const expectedCss = await fsPromises.readFile(pathToExpectedCssFile, 'utf8');
-    const pathToSavedCss = path.join(folderName, '/ru-hexlet-io-courses_files/css.css');
+    const pathToSavedCss = path.join(folderName, '/ru-hexlet-io-courses_files/site_files-css-style.css');
     const contentCss = await fsPromises.readFile(pathToSavedCss, 'utf8');
     expect(contentCss).toBe(expectedCss);
   });
@@ -65,9 +65,9 @@ describe('Save site', () => {
     await loadPage('https://ru.hexlet.io/courses', folderName);
 
     const pathToExpectedScriptFile = path
-      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/script.js');
+      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/site_files-script.js');
     const expectedScript = await fsPromises.readFile(pathToExpectedScriptFile, 'utf8');
-    const pathToSavedScript = path.join(folderName, '/ru-hexlet-io-courses_files/script.js');
+    const pathToSavedScript = path.join(folderName, '/ru-hexlet-io-courses_files/site_files-script.js');
     const contentScript = await fsPromises.readFile(pathToSavedScript, 'utf8');
     expect(contentScript).toBe(expectedScript);
   });
@@ -78,9 +78,9 @@ describe('Save site', () => {
     await loadPage('https://ru.hexlet.io/courses', folderName);
 
     const pathToExpectedImgFile = path
-      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/image.jpg');
+      .join(__dirname, '/__fixtures__/expected/ru-hexlet-io-courses_files/site_files-image.jpg');
     const expectedImg = await fsPromises.readFile(pathToExpectedImgFile, 'utf8');
-    const pathToSavedImg = path.join(folderName, '/ru-hexlet-io-courses_files/image.jpg');
+    const pathToSavedImg = path.join(folderName, '/ru-hexlet-io-courses_files/site_files-image.jpg');
     const contentImg = await fsPromises.readFile(pathToSavedImg, 'utf8');
     expect(contentImg).toBe(expectedImg);
   });

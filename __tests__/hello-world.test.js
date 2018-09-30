@@ -2,14 +2,13 @@ import { promises as fsPromises } from 'fs';
 import os from 'os';
 import path from 'path';
 import nock from 'nock';
-import { makeFileName } from '../src/makeName';
 import loadPage from '../src';
 
 nock.disableNetConnect();
 
 describe('Save hello world', () => {
   it('get file content', async () => {
-    const host = 'https://hexlet.io';
+    const host = 'https://ru.hexlet.io';
     const pathname = '/courses';
     const status = 200;
     const body = '<html><head></head><body>hello, world</body></html>';
@@ -20,7 +19,7 @@ describe('Save hello world', () => {
 
     const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
     await loadPage(`${host}${pathname}`, folderName);
-    const pathToFile = path.join(folderName, makeFileName(`${host}${pathname}`));
+    const pathToFile = path.join(folderName, '/ru-hexlet-io-courses.html');
     const fileContent = await fsPromises.readFile(pathToFile, 'utf8');
     expect(fileContent).toBe(body);
   });
