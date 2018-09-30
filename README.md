@@ -28,4 +28,4 @@ In this case page-loader will save data from <https://hexlet.io/courses> page in
 
 ### Asciinema
 
-<https://asciinema.org/a/F4kC8P5rpB2VHTj02Qp9L6LAT>
+<https://asciinema.org/a/B0innkHbmWJsXzprOzk9xIuAm>
