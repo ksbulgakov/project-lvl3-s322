@@ -1,6 +1,6 @@
 {
   "name": "page-loader-kobu",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -33,6 +33,7 @@
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.18.0",
     "debug": "^4.0.1",
+    "listr": "^0.14.2",
     "nock": "^10.0.0"
   },
   "devDependencies": {

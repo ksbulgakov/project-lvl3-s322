@@ -3,8 +3,11 @@ import os from 'os';
 import path from 'path';
 import nock from 'nock';
 import loadPage from '../src/';
+import makeName from '../src/makeName';
+
 
 nock.disableNetConnect();
+
 describe('Save hello world', () => {
   it('get file content', async () => {
     const host = 'https://ru.hexlet.io';
@@ -22,32 +25,8 @@ describe('Save hello world', () => {
     const fileContent = await fsPromises.readFile(pathToFile, 'utf8');
     expect(fileContent).toBe(body);
   });
-
-  it('error', async () => {
-    const host = 'https://hexlet.io';
-    const pathname = '/courses';
-
-    nock(host)
-      .get(pathname)
-      .replyWithError('timeout error');
-
-    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
-    try {
-      await loadPage(`${host}${pathname}`, folderName);
-    } catch (error) {
-      expect(error.message).toMatch('timeout error');
-    }
-  });
-
-  it('no link', async () => {
-    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
-    try {
-      await loadPage('', folderName);
-    } catch (error) {
-      expect(error.message).toMatch('No link. Link is requared.');
-    }
-  });
 });
+
 
 describe('Save site', () => {
   beforeEach(async () => {
@@ -89,7 +68,6 @@ describe('Save site', () => {
     expect(contentHtml).toBe(expectedHtml);
   });
 
-
   it('check css content', async () => {
     const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
     await loadPage('https://ru.hexlet.io/courses', folderName);
@@ -115,7 +93,6 @@ describe('Save site', () => {
     expect(contentScript).toBe(expectedScript);
   });
 
-
   it('check image content', async () => {
     const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
     await loadPage('https://ru.hexlet.io/courses', folderName);
@@ -126,5 +103,60 @@ describe('Save site', () => {
     const pathToSavedImg = path.join(folderName, '/ru-hexlet-io-courses_files/site_files-image.jpg');
     const contentImg = await fsPromises.readFile(pathToSavedImg, 'utf8');
     expect(contentImg).toBe(expectedImg);
+  });
+});
+
+
+describe('Errors', () => {
+  it('no link', async () => {
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
+    try {
+      await loadPage('', folderName);
+    } catch (error) {
+      expect(error.message).toMatch('No link. Link is requared.');
+    }
+  });
+
+  it('timeout error', async () => {
+    const host = 'https://hexlet.io';
+    const pathname = '/courses';
+
+    nock(host)
+      .get(pathname)
+      .replyWithError();
+
+    const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
+    try {
+      await loadPage(`${host}${pathname}`, folderName);
+    } catch (error) {
+      expect(error.code).toMatch('404');
+    }
+  });
+
+  it('directory for files exists', async () => {
+    const status = 200;
+    const host = 'https://ru.hexlet.io';
+    const body = '<html><head></head><body>hello, world</body></html>';
+
+    nock(host)
+      .get('/courses')
+      .reply(status, body);
+
+    const folder = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
+    await fsPromises.mkdir(path.join(folder, makeName('https://ru.hexlet.io/courses', 'folder')));
+
+    try {
+      await loadPage('https://ru.hexlet.io/courses', folder);
+    } catch (error) {
+      expect(error.code).toMatch('EEXIST');
+    }
+  });
+
+  it('directory not exists', async () => {
+    try {
+      await loadPage('https://ru.hexlet.io/courses', '/false_folder');
+    } catch (error) {
+      expect(error.code).toMatch('ENOENT');
+    }
   });
 });
