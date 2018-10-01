@@ -6,6 +6,12 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3668c147846a108ada03/test_coverage)](https://codeclimate.com/github/ksbulgakov/project-lvl3-s322/test_coverage)
 
+## Setup
+
+```sh
+ npm install page-loader-kobu -g
+```
+
 ## Description
 
 Educational project based on TDD principles.
