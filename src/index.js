@@ -41,18 +41,20 @@ const saveFiles = (linksList, host, dir) => Promise.all(linksList
     const logFileLoadingLink = debug('page-loader:loading_file');
     logFileLoadingLink(`loading from ${host}/${link}`);
 
-    return axios({
-      method: 'get',
-      url: `${host}/${link}`,
-      responseType: 'arraybuffer',
-    })
-      .then((response) => {
-        // logging
-        const logFileWriting = debug('page-loader:write_file');
-        logFileWriting(`writing file ${makeName(host, link)} from ${response.config.url}`);
-
-        return fsPromises.writeFile(`${path.resolve(dir)}/${makeName(host, link)}`, response.data);
-      });
+    return new Listr([{
+      title: `Loading ${host}/${path.normalize(link)}`,
+      task: () => axios({
+        method: 'get',
+        url: `${host}/${link}`,
+        responseType: 'arraybuffer',
+      })
+        .then((response) => {
+          // logging
+          const logFileWriting = debug('page-loader:write_file');
+          logFileWriting(`writing file ${makeName(host, link)} from ${response.config.url}`);
+          return fsPromises.writeFile(`${path.resolve(dir)}/${makeName(host, link)}`, response.data);
+        }),
+    }]).run();
   }));
 
 
