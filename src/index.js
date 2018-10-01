@@ -55,6 +55,7 @@ const saveFiles = (linksList, host, dir) => Promise.all(linksList
       });
   }));
 
+
 const loadPage = (host = null, dir = '') => {
   if (!host) {
     throw new Error('No link. Link is requared.');

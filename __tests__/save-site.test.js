@@ -117,13 +117,14 @@ describe('Errors', () => {
     }
   });
 
-  it('timeout error', async () => {
+  it('no response', async () => {
     const host = 'https://hexlet.io';
     const pathname = '/courses';
+    const status = 404;
 
     nock(host)
       .get(pathname)
-      .replyWithError();
+      .reply(status);
 
     const folderName = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'loadedPage-'));
     try {

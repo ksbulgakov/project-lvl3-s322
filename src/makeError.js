@@ -10,7 +10,7 @@ export default (error) => {
   }
   const message = `A response status ${error.response.status} was recieved. Please check the link`;
   const newError = new Error(message);
-  newError.code = error.response.status;
+  newError.code = error.response.status.toString();
 
   return newError;
 };
