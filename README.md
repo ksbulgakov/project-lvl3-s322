@@ -31,5 +31,5 @@ In this case page-loader will save data from <https://hexlet.io/courses> page in
 With logs
 <https://asciinema.org/a/B0innkHbmWJsXzprOzk9xIuAm>
 
-With work (4th step)
-<https://asciinema.org/a/Wg7FnCNPx3OJNBFjtf2XQjMaT>
+With work (4 - 5th step)
+<https://asciinema.org/a/DDMLYm16xJyNdD31Mhfp6rTeN>
